@@ -21,12 +21,10 @@ export class ListTodoitemComponent implements OnInit {
   }
 
   public detail(id: number): void {
-    this.todoService.selectTodoItem(id);
     this.router.navigate(['todos', id]);
   }
 
   public update(id: number): void {
-    this.todoService.selectTodoItemForUpdate(id);
     this.router.navigate(['todos/edit', id]);
   }
 
