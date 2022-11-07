@@ -3,20 +3,16 @@ import { TestBed } from '@angular/core/testing';
 import { of, throwError } from 'rxjs';
 import { TodoApiService } from '../api/todo.api.service';
 import { ToDoItem } from '../model/ToDoItem';
-import { TodoStoreService } from './todo-store.service';
 import { TodoService } from './todo.service';
 
 describe('TodoService', () => {
 
 
   let service: TodoService;
-  let todoStoreService: TodoStoreService;
-  let httpClient: any;
   let httpClienSpy: any;
 
   beforeEach(() => {
-    httpClienSpy = jasmine.createSpyObj('HttpClient', ['post'])
-    todoStoreService = new TodoStoreService();
+    httpClienSpy = jasmine.createSpyObj('HttpClient', ['post', 'get', 'delete'])
     TestBed.configureTestingModule({
       providers: [
         TodoApiService,
@@ -24,10 +20,6 @@ describe('TodoService', () => {
       ]
     });
     service = TestBed.inject(TodoService);
-  });
-
-  it('should be created', () => {
-    expect(service).toBeTruthy();
   });
 
   it('should create todoItem via mockHttp post', () => { 
@@ -39,8 +31,7 @@ describe('TodoService', () => {
     service.create(todoItem);
     // then
     expect(httpClienSpy.post).toHaveBeenCalledWith(
-      'https://635fc244ca0fe3c21aa3d012.mockapi.io/api/todos', todoItem)
-
+      'https://localhost:5001/todos', todoItem)
   })
 
   it('should response error when create failed', () => {
@@ -55,6 +46,27 @@ describe('TodoService', () => {
 
     // then
     expect(service.errorMessage).toEqual('create failed');
-
   })
+    
+  it('should return todoItem when get by id', () => {
+    // given
+    const todoItem = new ToDoItem(9, 'title', 'description', true);
+    // service.create(todoItem);
+    
+    // when
+    service.findById(9);
+    // then
+    expect(httpClienSpy.get).toHaveBeenCalledWith(
+      'https://localhost:5001/todos/9')
+  });
+
+  it('should delete success', () => {
+    // given
+    
+    // when
+    service.delete(9);
+    // then
+    expect(httpClienSpy.delete).toHaveBeenCalledWith(
+      'https://localhost:5001/todos?id=9')
+  });
 });
