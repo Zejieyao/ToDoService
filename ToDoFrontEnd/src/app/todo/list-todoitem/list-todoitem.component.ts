@@ -10,15 +10,13 @@ import { TodoService } from '../../service/todo.service';
 })
 export class ListTodoitemComponent implements OnInit {
 
-  public get toDoItems(): ToDoItem[] {
-    return this.todoService.todoItems;
-  }
+  public toDoItems: ToDoItem[] = [];
 
   constructor(private todoService: TodoService, private router: Router) {
   }
 
   ngOnInit(): void {
-    this.todoService.getAll();
+    this.todoService.getAll().subscribe(res => this.toDoItems = res);
   }
 
   public detail(id: number): void {
@@ -30,6 +28,9 @@ export class ListTodoitemComponent implements OnInit {
   }
 
   public doDelete(id: number): void {
-    this.todoService.delete(id);
+    this.todoService.delete(id).subscribe(() => {
+      const index = this.toDoItems.findIndex(item => item.id === id);
+      this.toDoItems.splice(index, 1);
+    });
   }
 }

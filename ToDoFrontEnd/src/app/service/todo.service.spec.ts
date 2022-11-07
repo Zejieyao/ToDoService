@@ -33,9 +33,9 @@ describe('TodoService', () => {
   it('should create todoItem via mockHttp post', () => { 
     // given
     const todoItem = new ToDoItem(9, 'title', 'description', true);
+    httpClienSpy.post.and.returnValue(of({}));
     
     // when
-    httpClienSpy.post.and.returnValue(of({}));
     service.create(todoItem);
     // then
     expect(httpClienSpy.post).toHaveBeenCalledWith(
