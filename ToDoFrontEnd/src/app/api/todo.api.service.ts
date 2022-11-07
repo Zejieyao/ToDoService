@@ -13,10 +13,23 @@ export class TodoApiService {
     private httpClient: HttpClient
   ) { }
 
-  // getAll(): Observable<ToDoItem[]> {
-  //   return this.httpClient.get<ToDoItem[]>(this.requestUrl);
-  // }
-  create(todoItem: ToDoItem): Observable<void> {
+  public getAll(): Observable<ToDoItem[]> {
+    return this.httpClient.get<ToDoItem[]>(this.requestUrl);
+  }
+
+  public create(todoItem: ToDoItem): Observable<void> {
     return this.httpClient.post<void>(this.requestUrl, todoItem);
+  }
+
+  public findById(id: number): Observable<ToDoItem> {
+    return this.httpClient.get<ToDoItem>(`${this.requestUrl}/${id}`);
+  }
+
+  public update(id: number, todoItem: ToDoItem): Observable<void> {
+    return this.httpClient.put<void>(`${this.requestUrl}/${id}`, todoItem);
+  }
+  
+  public delete(id: number): Observable<void> {
+    return this.httpClient.delete<void>(`${this.requestUrl}/${id}`);
   }
 }

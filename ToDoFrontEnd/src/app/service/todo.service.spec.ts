@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { throwError } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { TodoApiService } from '../api/todo.api.service';
 import { ToDoItem } from '../model/ToDoItem';
 import { TodoStoreService } from './todo-store.service';
@@ -35,8 +35,8 @@ describe('TodoService', () => {
     const todoItem = new ToDoItem(9, 'title', 'description', true);
     
     // when
+    httpClienSpy.post.and.returnValue(of({}));
     service.create(todoItem);
-
     // then
     expect(httpClienSpy.post).toHaveBeenCalledWith(
       'https://635fc244ca0fe3c21aa3d012.mockapi.io/api/todos', todoItem)
